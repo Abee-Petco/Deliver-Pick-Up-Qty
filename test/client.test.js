@@ -4,7 +4,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import DeliverPickup from '../react-client/src/DeliverPickup.jsx';
 
 Enzyme.configure({ adapter: new Adapter() });
-
+ 
 describe('deliverPickup', () => {
 
   let available = {"storeName":"N Walnut Creek","storeAddress":"2820 Ygnacio Valley Rd Walnut Creek, CA 94598","storePhoneNumber":"925-433-4194","availability":true};

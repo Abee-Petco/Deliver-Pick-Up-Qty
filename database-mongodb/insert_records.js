@@ -27,7 +27,7 @@ let storeData = [
     storePhoneNumber: '925-275-2111'
   }
 ]
-
+ 
 let insertStoreData = () => {
   return Store.insertMany(storeData)
 }

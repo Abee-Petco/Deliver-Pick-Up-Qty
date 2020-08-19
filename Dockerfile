@@ -9,3 +9,4 @@ RUN npm run build_client
 ENV PORT 3006
 EXPOSE $PORT
 CMD ["node", "server/start.js"]
+ 

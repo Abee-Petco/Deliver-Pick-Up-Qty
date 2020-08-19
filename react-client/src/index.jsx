@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import DeliverPickup from './DeliverPickup.jsx'
 import config from '../../config.js'
-
+ 
 class App extends React.Component {
   constructor(props) {
     super(props);

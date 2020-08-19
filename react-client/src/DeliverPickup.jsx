@@ -1,5 +1,5 @@
 import React from 'react';
-
+  
 const DeliverPickup = (props) => (
   <div className="deliveryPickupContainers">
     <div className="deliverPickup">

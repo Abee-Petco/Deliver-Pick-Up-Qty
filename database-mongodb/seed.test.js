@@ -15,7 +15,7 @@ beforeAll(() => {
 afterAll(() => {
   return mongoose.connection.close();
 })
-
+ 
 test('insert item availability data', () => {
   let storeIds;
   return insertRecords()

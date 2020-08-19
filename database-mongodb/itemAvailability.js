@@ -18,3 +18,4 @@ const Store = mongoose.model('Store', storeSchema);
 
 module.exports.Store = Store;
 module.exports.ItemAvailability = ItemAvailability;
+ 

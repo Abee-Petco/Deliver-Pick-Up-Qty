@@ -3,7 +3,7 @@ const {ItemAvailability, Store} = require('../database-mongodb/itemAvailability.
 const mongoose = require('mongoose');
 const request = require('supertest');
 const app = require('../server/index.js');
-
+ 
 beforeAll(() => {
   return mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true })
     .then(() => {
