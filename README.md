@@ -1,5 +1,5 @@
 # deliver-pickup
- 
+
 ## Related Projects
 
 - https://github.com/PetToyCo/mainTitle_price
@@ -17,7 +17,8 @@
 ## Usage
 
 Please Note: This service is currently in Production mode.
-if you need to return it to development mode, go to config.js file, comment aws configuration and uncomment the local one.
+if you need to return it to development mode, go to config.js file:
+[C] comment aws configuration and uncomment the local one.
 
 This service is meant to be used with a proxy server. If that is your intended use:
 

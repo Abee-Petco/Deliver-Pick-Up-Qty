@@ -3,7 +3,7 @@ const {ItemAvailability, Store} = require('../database-mongodb/itemAvailability.
 const mongoose = require('mongoose');
 const request = require('supertest');
 const app = require('../server/index.js');
- 
+
 beforeAll(() => {
   return mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true })
     .then(() => {
@@ -50,3 +50,12 @@ test('successfully retrieves availability data for item 106', () => {
 });
 
 });
+
+/*
+let newStoreData = [
+  {
+    storeName: 'Union Square',
+    storeAddress: '860 Broadway, New York, NY 10003',
+    storePhoneNumber: '212-358-0692'
+  }
+*/
