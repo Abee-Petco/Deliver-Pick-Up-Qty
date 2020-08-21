@@ -1,6 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { ItemAvailability, Store } = require('../database-mongodb/itemAvailability.js')
+const {
+  findAnItemAvailAndStore,
+  addNewStore,
+  updateAvailabilityInStore,
+  deleteStore,
+} = require('../models/mongoDB_model.js')
 const mongoose = require('mongoose');
 const connect = require('../database-mongodb/connect.js')
 const cors = require('cors');
@@ -51,12 +57,12 @@ app.get('/availableAt/:itemId/', function (req, res) {
 
 //CREATE - new store
 app.post('/newStore/', function (req, res) {
-  console.log('Adding new store data rcvd: ', req)
-  let storeData = req.body;
+  console.log('Adding new store data rcvd: ', req.query);
+  let storeData = req.query;
   return addNewStore(storeData)
-    .then((res) => {
-      console.log('server: success adding new store', res)
-      res.status(201).send('server: record created');
+    .then((data) => {
+      console.log('server: success adding new store', data)
+      res.status(201).send(data);
     })
     .catch((err) => {
       res.status(500).send(err);
