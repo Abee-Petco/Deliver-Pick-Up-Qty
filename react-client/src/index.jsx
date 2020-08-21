@@ -3,14 +3,17 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import DeliverPickup from './DeliverPickup.jsx'
 import config from '../../config.js'
- 
+
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      itemAvailability: null,
-      itemPrice: null,
-      itemCurrency: null
+      itemAvailability: [{storeName: 'N Walnut Creek',
+      storeAddress: '2820 Ygnacio Valley Rd Walnut Creek, CA 94598',
+      storePhoneNumber: '925-433-4194',
+      availability: true}],
+      itemPrice: 22,
+      itemCurrency: "$"
     }
   }
 
@@ -20,7 +23,7 @@ class App extends React.Component {
       url: config.itemPrice + this.props.itemId,
       type: "get",
       success: (data) => {
-        console.log('Data returned from the title amd price service', data);
+        console.log('Data returned from the title and price service', data);
         this.setState({
           itemPrice: data.price,
           itemCurrency: data.currency
