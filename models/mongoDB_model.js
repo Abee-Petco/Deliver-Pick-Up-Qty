@@ -71,14 +71,15 @@ let updateAvailabilityInStore = function (itemId) {
 };
 
 //DELETE - look for shortcut to delete
-let deleteStore = function (storeName) {
-  return Store.findOneAndDelete({ storeName }, '-id -_v')
-    .then((data) => {
-      console.log('db: delete data with this itemId', data)
+let deleteStore = function (store) {
+  console.log('database received store to delete: ', store)
+  return Store.findOneAndDelete({ storeName: store })
+    .then((deleteObj) => {
+      console.log('db: success deleted store from data', deleteObj)
+      return deleteObj;
     })
     .catch((err) => {
-      res.status(500).send(err);
-      console.log(err);
+      throw err;
     })
 };
 
