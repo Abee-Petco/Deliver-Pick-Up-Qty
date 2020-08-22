@@ -87,12 +87,12 @@ app.put('/updateRecord/:itemId/', function (req, res) {
 
 //DELETE - remove closing store
 app.delete('/deleteStore/', function (req, res) {
-  console.log('received store to delete', req)
-  let storeName = req.params.storeName;
+  console.log('received store to delete', req.query)
+  let storeName = req.query.storeName;
   return deleteStore(storeName)
     .then((data) => {
       console.log('server: store deleted', data)
-      res.status(201).send('server: record deleted');
+      res.status(200).send(data);
     })
     .catch((err) => {
       res.status(500).send(err);
