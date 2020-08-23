@@ -36,13 +36,116 @@ Example: `http://127.0.0.1:3006/?itemID=106`
 
 ## Endpoints:
 
-This service has one endpoint. Endpoint retrieves array of stores and item availability. To retrieve data for a specific item, navigate to:
+This service has four endpoints.
 
-Go to http://localhost:3006/availableAt/:itemId/
+### CREATE:
+
+Endpoint: '/newStore/'
+
+Development URL: http://localhost:3006/newStore/
+
+Route type:  POST
+
+Summary: Endpoint takes in parameters in the following JSON key, value format:
+
+{
+    "storeName" : "Hancock Center",
+    "storeAddress" : "1000 E 41st St, Austin, TX 78751",
+    "storePhoneNumber" : "(512) 419-0311"
+}
+
+Response: returns a new store object with database generated id included in the following JSON response format:
+
+{
+    "_id": "5f42c47d618c0a6e8a640391",
+    "storeName": "Hancock Center",
+    "storeAddress": "1000 E 41st St, Austin, TX 78751",
+    "storePhoneNumber": "(512) 419-0311",
+    "__v": 0
+}
+
+### READ:
+
+Endpoint: '/availableAt/:itemId/'
+
+Development URL: http://localhost:3006/availableAt/:itemId/
+
+Route type:  GET
+
+Summary: Endpoint takes in an itemId in numerical format between 1 - 100 (soon to be 1 - 1MM):
+
+itemId=177
+
+Sample localhostURL:
+localhost:3006/availableAt/?itemId=177
+
+Response: returns an array of stores and item availability at each store.
 
 JSON response format:
 
-{"itemAvailability":[{"storeName":"N Walnut Creek","storeAddress":"2820 Ygnacio Valley Rd Walnut Creek, CA 94598","storePhoneNumber":"925-433-4194","availability":true},{"storeName":"Walnut Creek","storeAddress":"1301 S. California Blvd Walnut Creek, CA 94596-5124","storePhoneNumber":"925-988-9370","availability":true},{"storeName":"Concord","storeAddress":"1150 Concord Ave Suite 160 Concord, CA 94520","storePhoneNumber":"925-356-0217","availability":true},{"storeName":"Martinez","storeAddress":"1170 Arnold Drive No. 115 Martinez, CA 94553","storePhoneNumber":"925-370-6060","availability":false},{"storeName":"San Ramon","storeAddress":"2005 Crow Canyon PI San Ramon, CA 94583-1361","storePhoneNumber":"925-275-2111","availability":true}]}
+{"itemAvailability":[
+	{"storeName":"N Walnut Creek",
+	"storeAddress":"2820 Ygnacio Valley Rd Walnut Creek, CA 94598",
+	"storePhoneNumber":"925-433-4194",
+	"availability":true},
+	{"storeName":"Walnut Creek",
+	"storeAddress":"1301 S. California Blvd Walnut Creek, CA 94596-5124",
+	"storePhoneNumber":"925-988-9370",
+	"availability":true},
+	...]
+}
+
+### UPDATE:
+
+Endpoint: '/updateStoreDetails/'
+
+Development URL: http://localhost:3006/updateStoreDetails/
+
+Route type:  PUT
+
+Summary: Endpoint takes in parameters in the following JSON key, value format:
+
+{
+"storeName" : "Union Square",
+"storeAddress" : "860 Broadway, New York, NY 10003",
+"storePhoneNumber" : "222-222-2222"
+}
+
+NOTE: Ensure all fields are reviewed, updated if needed, and included in request.
+
+
+Response: returns an updated store object in the following JSON response format:
+
+{
+"_id" : ObjectId("5f400c2e5cdb129b4e66f092"),
+"storeName" : "Union Square",
+"storeAddress" : "860 Broadway, New York, NY 10003",
+"storePhoneNumber" : "222-222-2222"
+}
+
+### DELETE:
+
+Endpoint:  '/deleteStore/'
+
+Development URL: http://localhost:3006/deleteStore/?storeName=Northwest DC
+
+Route type:  DELETE
+
+Summary: Endpoint takes in a store name in the following key, value format:
+
+{
+"storeName" : "Northwest DC"
+}
+Response: returns the deleted store object in the following JSON response format:
+
+{
+    "_id": "5f40322cd3411237ff8cc5cc",
+    "storeAddress": "3100 14th St NW, Washington, DC 20010",
+    "storePhoneNumber": "(202) 332-0010",
+    "storeName": "Northwest DC",
+    "__v": 0
+}
+
 
 ## Proxy Integration
 
