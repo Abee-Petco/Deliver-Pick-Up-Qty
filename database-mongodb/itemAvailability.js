@@ -16,7 +16,10 @@ const storeSchema = new mongoose.Schema({
 
 const itemAvailabilitySchema = new mongoose.Schema({
   itemId: String,
-  itemAvailability: [{storeId: {type: mongoose.Schema.Types.ObjectId, ref: 'Store'}, availability: Boolean}]
+  itemAvailability: [{
+    storeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Store' },
+    availability: Boolean
+  }]
 });
 
 const ItemAvailability = mongoose.model('ItemAvailability', itemAvailabilitySchema);

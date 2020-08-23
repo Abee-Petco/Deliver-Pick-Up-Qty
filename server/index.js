@@ -4,7 +4,7 @@ const { ItemAvailability, Store } = require('../database-mongodb/itemAvailabilit
 const {
   findAnItemAvailAndStore,
   addNewStore,
-  updateAvailabilityInStore,
+  updateStoreDetails,
   deleteStore,
 } = require('../models/mongoDB_model.js')
 const mongoose = require('mongoose');
@@ -25,7 +25,7 @@ app.get('*.js', (req, res, next) => {
 
 app.use(express.static(__dirname + '/../react-client/dist'));
 
-//READ - get item in avail stores 
+//READ - get item in avail stores
 app.get('/availableAt/:itemId/', function (req, res) {
   console.log('svr rcvd avail req. item = ', req.params.itemId);
   let itemId = req.params.itemId;
@@ -58,14 +58,14 @@ app.post('/newStore/', function (req, res) {
     })
 });
 
-//UPDATE - change item availability
-app.put('/updateRecord/:itemId/', function (req, res) {
-  console.log('received itemId 4 update: ', req.params.itemId);
-  let item = req.params.itemId;
-  return updateAvailabilityInStore(item)
+//UPDATE - change store data
+app.put('/updateStoreDetails/', function (req, res) {
+  console.log('received storeName to update: ', req);
+  let storeData = req.query;
+  return updateStoreDetails(storeData)
     .then((data) => {
       console.log('server: item update success', data);
-      res.status(201).send('server: item record updated');
+      res.status(201).send('server: store record updated');
     })
     .catch((err) => {
       res.status(500).send(err);
@@ -73,7 +73,7 @@ app.put('/updateRecord/:itemId/', function (req, res) {
     })
 });
 
-//DELETE - remove closing store
+//DELETE - remove closing store location
 app.delete('/deleteStore/', function (req, res) {
   console.log('received store to delete', req.query)
   let storeName = req.query.storeName;
