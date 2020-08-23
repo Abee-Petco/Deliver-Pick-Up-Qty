@@ -25,29 +25,17 @@ app.get('*.js', (req, res, next) => {
 
 app.use(express.static(__dirname + '/../react-client/dist'));
 
+//READ - get item in avail stores 
 app.get('/availableAt/:itemId/', function (req, res) {
-  console.log('Trying to fetch data', req.params.itemId);
-  return ItemAvailability.findOne({ itemId: req.params.itemId }, '-_id -__v')
-    .populate({
-      path: 'itemAvailability',
-      populate: {
-        path: 'storeId'
-      }
-    })
+  console.log('svr rcvd avail req. item = ', req.params.itemId);
+  let itemId = req.params.itemId;
+  return findAnItemAvailAndStore(itemId)
     .then((data) => {
-      if (data) {
-        let storeData = data.itemAvailability.map((store) => {
-          return {
-            storeName: store.storeId.storeName,
-            storeAddress: store.storeId.storeAddress,
-            storePhoneNumber: store.storeId.storePhoneNumber,
-            availability: store.availability
-          }
-        })
-        res.status(200).send({ itemAvailability: storeData });
-      } else {
-        res.sendStatus(404);
+      if (data.itemAvailability === 'No items found') {
+        res.status(404).send('No items found.')
       }
+      console.log('server: success getting store list', data)
+      res.status(201).send(data);
     })
     .catch((err) => {
       res.status(500).send(err);

@@ -5,6 +5,7 @@ const { ItemAvailability, Store } = require('../database-mongodb/itemAvailabilit
 
 //GET - find one item
 let findAnItemAvailAndStore = function (itemId) {
+  console.log('db model rcvd item id = ', itemId)
   return ItemAvailability.findOne({ itemId: itemId }, '-_id -__v')
     .populate({
       path: 'itemAvailability',
@@ -13,6 +14,7 @@ let findAnItemAvailAndStore = function (itemId) {
       }
     })
     .then((data) => {
+      console.log('db model processed itemId, store lookup = ', data);
       if (data) {
         let storeData = data.itemAvailability.map((store) => {
           return {
@@ -22,9 +24,9 @@ let findAnItemAvailAndStore = function (itemId) {
             availability: store.availability
           }
         })
-        res.status(200).send({ itemAvailability: storeData });
+        return { itemAvailability: storeData };
       } else {
-        res.sendStatus(404);
+        return { itemAvailability: 'No items found'};
       }
     })
     .catch((err) => {
