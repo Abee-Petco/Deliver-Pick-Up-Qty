@@ -45,8 +45,8 @@ app.get('/availableAt/:itemId/', function (req, res) {
 
 //CREATE - new store
 app.post('/newStore/', function (req, res) {
-  console.log('Adding new store data rcvd: ', req.query);
-  let storeData = req.query;
+  console.log('Adding new store data rcvd: ', req.body);
+  let storeData = req.body;
   return addNewStore(storeData)
     .then((data) => {
       console.log('server: success adding new store', data)
@@ -60,8 +60,8 @@ app.post('/newStore/', function (req, res) {
 
 //UPDATE - change store data
 app.put('/updateStoreDetails/', function (req, res) {
-  console.log('received storeName to update: ', req);
-  let storeData = req.query;
+  console.log('received storeName to update: ', req.body);
+  let storeData = req.body;
   return updateStoreDetails(storeData)
     .then((data) => {
       console.log('server: item update success', data);
@@ -76,7 +76,7 @@ app.put('/updateStoreDetails/', function (req, res) {
 //DELETE - remove closing store location
 app.delete('/deleteStore/', function (req, res) {
   console.log('received store to delete', req.query)
-  let storeName = req.query.storeName;
+  let storeName = req.body.storeName;
   return deleteStore(storeName)
     .then((data) => {
       console.log('server: store deleted', data)
