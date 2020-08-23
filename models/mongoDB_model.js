@@ -47,34 +47,29 @@ let addNewStore = function (storeData) {
     })
 };
 
-//UPDATE - change item avail
-let updateAvailabilityInStore = function (itemId) {
-  return ItemAvailability.findOne({ itemId: itemId }, '-id -_v')
-    .populate({
-      path: 'itemAvailability',
-      populate: {
-        path: 'storeId'
-      }
-    })
-    .then((data) => {
-      console.log('db: store data with this itemId', data)
-      if (data) {
-        // update store details or increase avail of an item
-        // save change (see if findOne() is best solution)
-        res.status(200).send({ itemAvailability: data });
-      } else {
-        res.sendStatus(404);
-      }
+//UPDATE - change stores phone number
+let updateStoreDetails = function (storeDetails) {
+  console.log('database received store to update: ', storeDetails);
+  const filter = { storeName: storeDetails.storeName };
+  const update = {
+    storeName: storeDetails.storeName,
+    storeAddress: storeDetails.storeAddress,
+    storePhoneNumber: storeDetails.storePhoneNumber
+  };
+  console.log('db model has vals to do lookup and update: ', filter, update);
+  return Store.findOneAndUpdate(filter, update, { new: true})
+    .then((updatedStore) => {
+      console.log('db: success updating store data', updatedStore)
+      return updatedStore;
     })
     .catch((err) => {
-      res.status(500).send(err);
-      console.log(err);
+      throw err;
     })
 };
 
-//DELETE - look for shortcut to delete
+//DELETE - remove closing store location
 let deleteStore = function (store) {
-  console.log('database received store to delete: ', store)
+  console.log('database received store to update: ', store)
   return Store.findOneAndDelete({ storeName: store })
     .then((deleteObj) => {
       console.log('db: success deleted store from data', deleteObj)
@@ -88,6 +83,6 @@ let deleteStore = function (store) {
 module.exports = {
   findAnItemAvailAndStore,
   addNewStore,
-  updateAvailabilityInStore,
+  updateStoreDetails,
   deleteStore
 }
