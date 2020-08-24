@@ -46,7 +46,7 @@ Development URL: http://localhost:3006/newStore/
 
 Route type:  POST
 
-Summary: Endpoint takes in parameters in the following JSON key, value format:
+Input: Endpoint takes in parameters in the following JSON key, value format:
 
 {
     "storeName" : "Hancock Center",
@@ -54,7 +54,7 @@ Summary: Endpoint takes in parameters in the following JSON key, value format:
     "storePhoneNumber" : "(512) 419-0311"
 }
 
-Response: returns a new store object with database generated id included in the following JSON response format:
+Output: returns a new store object with database generated id included in the following JSON response format:
 
 {
     "_id": "5f42c47d618c0a6e8a640391",
@@ -72,14 +72,14 @@ Development URL: http://localhost:3006/availableAt/:itemId/
 
 Route type:  GET
 
-Summary: Endpoint takes in an itemId in numerical format between 1 - 100 (soon to be 1 - 1MM):
+Input: Endpoint takes in an itemId in numerical format between 1 - 100 (soon to be 1 - 1MM):
 
 itemId=177
 
 Sample localhostURL:
 localhost:3006/availableAt/?itemId=177
 
-Response: returns an array of stores and item availability at each store.
+Output: returns an array of stores and item availability at each store.
 
 JSON response format:
 
@@ -103,7 +103,7 @@ Development URL: http://localhost:3006/updateStoreDetails/
 
 Route type:  PUT
 
-Summary: Endpoint takes in parameters in the following JSON key, value format:
+Input: Endpoint takes in parameters in the following JSON key, value format:
 
 {
 "storeName" : "Union Square",
@@ -114,7 +114,7 @@ Summary: Endpoint takes in parameters in the following JSON key, value format:
 NOTE: Ensure all fields are reviewed, updated if needed, and included in request.
 
 
-Response: returns an updated store object in the following JSON response format:
+Output: returns an updated store object in the following JSON response format:
 
 {
 "_id" : ObjectId("5f400c2e5cdb129b4e66f092"),
@@ -131,13 +131,13 @@ Development URL: http://localhost:3006/deleteStore/?storeName=Northwest DC
 
 Route type:  DELETE
 
-Summary: Endpoint takes in a store name in the following key, value format:
+Input: Endpoint takes in a store name in the following key, value format:
 
 {
 "storeName" : "Northwest DC"
 }
 
-Response: returns the deleted store object in the following JSON response format:
+Output: returns the deleted store object in the following JSON response format:
 
 {
     "_id": "5f40322cd3411237ff8cc5cc",
