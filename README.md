@@ -136,6 +136,7 @@ Summary: Endpoint takes in a store name in the following key, value format:
 {
 "storeName" : "Northwest DC"
 }
+
 Response: returns the deleted store object in the following JSON response format:
 
 {
