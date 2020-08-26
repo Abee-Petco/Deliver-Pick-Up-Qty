@@ -4,7 +4,7 @@ const faker = require('faker');
 
 //fake = Faker([en_US]);
 const writeItems = fs.createWriteStream('items.csv');
-writeItems.write('itemId, itemAvailability\n', 'utf8');
+writeItems.write('item_Id, item_Availability, item_Price\n', 'utf8');
 
 //resources:
 //https://nodejs.org/api/stream.html#stream_event_drain
@@ -30,7 +30,6 @@ function writeTenMillionProductsToCSV(writer, encoding, callback) {
       const item_Id = id;
       const item_Availability = Math.random() < 0.7;
       const item_Price = faker.commerce.price(); //product price: 7fakerPrice, "online only", "out of stock"
-
       const data = `${item_Id},${item_Availability},${item_Price}\n`;
       console.log('items data is shaped like so: ', data);
 

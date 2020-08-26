@@ -2,8 +2,9 @@ const fs = require('fs');
 
 const csvWriter = require('csv-write-stream');
 var writer = csvWriter()
-const writeItems = fs.createWriteStream('items.csv');
-writeItems.write('itemId, itemAvailability\n', 'utf8');
+const writeStores = fs.createWriteStream('stores.csv');
+
+writeStores.write('store_Id | store_Name | store_Address | store_PhoneNumber\n', 'utf8');
 
 const faker = require('faker/locale/en_US');
 //faker.locale = "en_US"
@@ -12,16 +13,14 @@ const faker = require('faker/locale/en_US');
 //https://nodejs.org/api/stream.html#stream_event_drain
 //https://medium.com/@danielburnsart/writing-a-large-amount-of-data-to-a-csv-file-using-nodes-drain-event-99dcaded99b5
 
-//10MM products across 1500 stores
-
-//product id 100 - 10,000,100
-//product price: 7fakerPrice, "online only", "out of stock"
+//10MM products across 1000 stores
 
 //Example:
 function writeOneThousandStoresToCSV(writer, encoding, callback) {
 
-  let i = 10000;
-  let id = 100;
+  let i = 1501;
+  let id = 0;
+  const delimiter = '|'
 
   function write() {
 
@@ -35,10 +34,10 @@ function writeOneThousandStoresToCSV(writer, encoding, callback) {
       const store_Address = `${faker.address.streetAddress()}, ${faker.address.city()}, ${faker.address.stateAbbr()}, ${faker.address.zipCode()}`;
       const store_PhoneNumber = faker.phone.phoneNumberFormat()
 
-      const data = `${id}, ${store_Name}, ${store_Address}, ${store_PhoneNumber}\n`;
+      const data = `${id} ${delimiter} ${store_Name} ${delimiter} ${store_Address} ${delimiter} ${store_PhoneNumber}\n`;
       console.log('store data is shaped like so: ', data)
 
-      if (i === 100) {
+      if (i === 1) {
         writer.write(data, encoding, callback);
 
       } else {
@@ -47,9 +46,9 @@ function writeOneThousandStoresToCSV(writer, encoding, callback) {
         ok = writer.write(data, encoding);
       }
 
-    } while (i > 100 && ok);
+    } while (i > 1 && ok);
 
-    if (i > 100) {
+    if (i > 1) {
       // had to stop early!
       // write some more once it drains
       writer.once('drain', write);
@@ -59,6 +58,6 @@ function writeOneThousandStoresToCSV(writer, encoding, callback) {
 }
 // pauses the write process when the buffer is full and once the drain event if fired, it continues until all the records have been written.
 
-writeOneThousandStoresToCSV(writeItems, 'utf-8', () => {
-  writeItems.end();
+writeOneThousandStoresToCSV(writeStores, 'utf-8', () => {
+  writeStores.end();
 });

@@ -1,6 +1,6 @@
-itemId, itemAvailability
-101,true,235.00
-102,true,545.00
-103,true,330.00
-104,false,871.00
-105,false,343.00
+item_Id, item_Availability, item_Price
+101,false,455.00
+102,true,997.00
+103,true,456.00
+104,true,792.00
+105,true,533.00
