@@ -4,16 +4,14 @@
 
 // DRAFT SCHEMA to be added to db files
 CREATE TABLE stores(
-  parent_id integer primary key,
-  store_Name VARCHAR
-  store_Address VARCHAR
+  store_id INT primary key,
+  store_Name VARCHAR,
+  store_Address VARCHAR,
   store_PhoneNumber VARCHAR
 );
 
 CREATE TABLE products(
-  child_id integer primary key,
-  parent_id integer not null references stores(parent_id), //link to stores (1 - 1500), randomize among n number of stores
-  item_Id VARCHAR
-  item_Availability VARCHAR
+  item_Id INT primary key,
+  item_Availability BOOL,
   item_Price VARCHAR
 );

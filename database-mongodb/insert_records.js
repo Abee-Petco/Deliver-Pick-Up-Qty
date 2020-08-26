@@ -27,39 +27,49 @@ let storeData = [
     storePhoneNumber: '925-275-2111'
   }
 ]
- 
+
 let insertStoreData = () => {
   return Store.insertMany(storeData)
 }
 
 const generateRecords = () => {
+  //1 creates the stores
   return insertStoreData()
     .then(() => {
+      //then return all store db generated unique id's
       return Store.find({}).select('_id')
     })
-    .then((data) => {
-      console.log('StoreData', data)
+    //all of the newly created stores are returned
+    .then((stores) => {
+      console.log('StoreData', storesIds)
       let itemData = [];
+      //then iterated over each of the 100 items
       for (let i = 100; i < 200; i++) {
-        let itemAvailability = data.map((value) => {
-          return {storeId: value._id, availability: Math.random() < 0.7}
+        //for every store
+        let itemAvailability = stores.map((store) => {
+          //set the storeId to the value of unique store id. set availabilility of item randomly to true or false
+          return {storeId: store._id, availability: Math.random() < 0.7}    //results in 30% false availability, 70% true for each product across
         })
+        //created an item record (100 - 199) and ItemAvail as properties and pushed to array
         itemData.push({itemId: i.toString(), itemAvailability});
       }
+      console.log('Array of data objects/rows: ', itemData);
       return itemData;
     })
 }
 
 let insertRecords = () => {
-  return generateRecords()
+  return generateRecords() //returns 100 - 199 itemIds distributed across 5 stores
     .then((data) => {
       console.log('Data', data[0])
+      //inserts itemId (product data) into the table
       return ItemAvailability.insertMany(data)
         .then(() => {
           console.log('Successfully inserted records')
         })
     })
 }
+
 
 
 module.exports = insertRecords;

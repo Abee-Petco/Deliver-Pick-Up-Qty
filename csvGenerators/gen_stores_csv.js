@@ -1,11 +1,12 @@
 const fs = require('fs');
-const csvWriter = require('csv-write-stream');
 
-const faker = require('faker');
-const fs = require('fs');
-//fake = Faker([en_US]);
+const csvWriter = require('csv-write-stream');
+var writer = csvWriter()
 const writeItems = fs.createWriteStream('items.csv');
 writeItems.write('itemId, itemAvailability\n', 'utf8');
+
+const faker = require('faker/locale/en_US');
+//faker.locale = "en_US"
 
 //resources:
 //https://nodejs.org/api/stream.html#stream_event_drain
@@ -19,7 +20,7 @@ writeItems.write('itemId, itemAvailability\n', 'utf8');
 //Example:
 function writeOneThousandStoresToCSV(writer, encoding, callback) {
 
-  let i = 105;
+  let i = 10000;
   let id = 100;
 
   function write() {
@@ -29,32 +30,35 @@ function writeOneThousandStoresToCSV(writer, encoding, callback) {
     do {
       i -= 1;
       id += 1;
+      //console.log(faker.fake("{{name.lastName}}, {{name.firstName}} {{name.suffix}}"));
+      const store_Name = faker.address.streetName();
+      const store_Address = `${faker.address.streetAddress()}, ${faker.address.city()}, ${faker.address.stateAbbr()}, ${faker.address.zipCode()}`;
+      const store_PhoneNumber = faker.phone.phoneNumberFormat()
 
-      const store_Name = faker.providers.address.en.Provider.street_name();
-      const store_Address = `${faker.address.city()}, ${faker.address.stateAbbr()}, ${faker.address.zipCode()}`;
-      const store_PhoneNumber = faker.phone.PhoneNumber()
-    };
-    const data = `${id},${store_Name},${store_Address}, ${store_PhoneNumber}\n`;
+      const data = `${id}, ${store_Name}, ${store_Address}, ${store_PhoneNumber}\n`;
+      console.log('store data is shaped like so: ', data)
 
-    if (i === 0) {
-      writer.write(data, encoding, callback);
+      if (i === 100) {
+        writer.write(data, encoding, callback);
 
-    } else {
-      // see if we should continue, or wait
-      // don't pass the callback, because we're not done yet.
-      ok = writer.write(data, encoding);
+      } else {
+        // see if we should continue, or wait
+        // don't pass the callback, because we're not done yet.
+        ok = writer.write(data, encoding);
+      }
+
+    } while (i > 100 && ok);
+
+    if (i > 100) {
+      // had to stop early!
+      // write some more once it drains
+      writer.once('drain', write);
     }
-  } while (i > 0 && ok);
-  if (i > 0) {
-    // had to stop early!
-    // write some more once it drains
-    writer.once('drain', write);
   }
-}
-write()
+  write()
 }
 // pauses the write process when the buffer is full and once the drain event if fired, it continues until all the records have been written.
 
-writeTenMillionUsers(writeUsers, 'utf-8', () => {
-  writeUsers.end();
+writeOneThousandStoresToCSV(writeItems, 'utf-8', () => {
+  writeItems.end();
 });

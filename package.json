@@ -9,6 +9,8 @@
     "client": "webpack -d --watch",
     "seed": "node database-mongodb/seed.js",
     "seed_postGres": "node database-postgreSql/seed.js",
+    "csv_stores": "node csvGenerators/gen_stores_csv.js",
+    "csv_items": "node csvGenerators/gen_items_csv.js",
     "build_client": "webpack --mode production"
   },
   "author": "",
@@ -16,7 +18,9 @@
   "dependencies": {
     "axios": "^0.19.2",
     "cors": "^2.8.5",
+    "csv-write-stream": "^2.0.0",
     "express": "^4.17.1",
+    "faker": "^5.0.0",
     "jquery": "^3.5.1",
     "mongoose": "^5.9.18",
     "morgan": "^1.10.0",
