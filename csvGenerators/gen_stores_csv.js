@@ -7,13 +7,12 @@ const writeStores = fs.createWriteStream('stores.csv');
 writeStores.write('store_Id | store_Name | store_Address | store_PhoneNumber\n', 'utf8');
 
 const faker = require('faker/locale/en_US');
-//faker.locale = "en_US"
 
 //resources:
 //https://nodejs.org/api/stream.html#stream_event_drain
 //https://medium.com/@danielburnsart/writing-a-large-amount-of-data-to-a-csv-file-using-nodes-drain-event-99dcaded99b5
 
-//10MM products across 1000 stores
+//10MM products across 1500 stores
 
 //Example:
 function writeOneThousandStoresToCSV(writer, encoding, callback) {
@@ -29,13 +28,12 @@ function writeOneThousandStoresToCSV(writer, encoding, callback) {
     do {
       i -= 1;
       id += 1;
-      //console.log(faker.fake("{{name.lastName}}, {{name.firstName}} {{name.suffix}}"));
+
       const store_Name = faker.address.streetName();
       const store_Address = `${faker.address.streetAddress()}, ${faker.address.city()}, ${faker.address.stateAbbr()}, ${faker.address.zipCode()}`;
       const store_PhoneNumber = faker.phone.phoneNumberFormat()
 
       const data = `${id} ${delimiter} ${store_Name} ${delimiter} ${store_Address} ${delimiter} ${store_PhoneNumber}\n`;
-      console.log('store data is shaped like so: ', data)
 
       if (i === 1) {
         writer.write(data, encoding, callback);
@@ -61,3 +59,4 @@ function writeOneThousandStoresToCSV(writer, encoding, callback) {
 writeOneThousandStoresToCSV(writeStores, 'utf-8', () => {
   writeStores.end();
 });
+

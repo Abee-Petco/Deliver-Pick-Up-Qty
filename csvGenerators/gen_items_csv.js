@@ -1,10 +1,12 @@
 const fs = require('fs');
-const csvWriter = require('csv-write-stream');
-const faker = require('faker');
 
-//fake = Faker([en_US]);
+const csvWriter = require('csv-write-stream');
+var writer = csvWriter()
 const writeItems = fs.createWriteStream('items.csv');
-writeItems.write('item_Id, item_Availability, item_Price\n', 'utf8');
+
+writeItems.write('item_Id |  item_StoreId | item_Availability | item_Price\n', 'utf8');
+
+const faker = require('faker');
 
 //resources:
 //https://nodejs.org/api/stream.html#stream_event_drain
@@ -13,11 +15,13 @@ writeItems.write('item_Id, item_Availability, item_Price\n', 'utf8');
 //10MM products across 1500 stores
 //product id 100 - 10,000,100
 
+console.time("data generation test");
+
 //Example:
 function writeTenMillionProductsToCSV(writer, encoding, callback) {
 
-  let i = 105;
-  let id = 100; //test small at first to verify data gen'd is usable
+  let i = 1000000;
+  let id = 100;
 
   function write() {
 
@@ -26,11 +30,17 @@ function writeTenMillionProductsToCSV(writer, encoding, callback) {
     do {
       i -= 1;
       id += 1;
+      const delimiter = '|'
 
       const item_Id = id;
-      const item_Availability = Math.random() < 0.7;
-      const item_Price = faker.commerce.price(); //product price: 7fakerPrice, "online only", "out of stock"
-      const data = `${item_Id},${item_Availability},${item_Price}\n`;
+      const item_Availability = faker.random.boolean();  //Math.random() < 0.7
+      const item_Price = faker.commerce.price();
+      const item_StoreId = faker.random.number({
+        'min': 1,
+        'max': 1500
+      });
+
+      const data = `${item_Id} ${delimiter} ${item_StoreId} ${delimiter} ${item_Availability} ${delimiter} ${item_Price}\n`;
       console.log('items data is shaped like so: ', data);
 
       if (i === 100) {
@@ -57,3 +67,5 @@ function writeTenMillionProductsToCSV(writer, encoding, callback) {
 writeTenMillionProductsToCSV(writeItems, 'utf-8', () => {
   writeItems.end();
 });
+
+console.timeEnd("data generation test");

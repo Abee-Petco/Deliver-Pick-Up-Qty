@@ -13,5 +13,7 @@ CREATE TABLE stores(
 CREATE TABLE products(
   item_Id INT primary key,
   item_Availability BOOL,
-  item_Price VARCHAR
+  item_Price VARCHAR,
+  item_StoreId INT
 );
+
