@@ -17,3 +17,7 @@ CREATE TABLE items(
   item_Price VARCHAR
 );
 
+// pay_by_quarter  integer ARRAY
+
+// Step 3: load data to db
+// Step 4: data in tables using queries
