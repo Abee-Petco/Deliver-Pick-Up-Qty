@@ -20,8 +20,8 @@ console.time("data generation test");
 //Example:
 function writeTenMillionProductsToCSV(writer, encoding, callback) {
 
-  let i = 1000000;
-  let id = 100;
+  let i = 10000001;
+  let id = 99;
 
   function write() {
 
@@ -34,14 +34,13 @@ function writeTenMillionProductsToCSV(writer, encoding, callback) {
 
       const item_Id = id;
       const item_Availability = faker.random.boolean();  //Math.random() < 0.7
-      const item_Price = faker.commerce.price();
+      const item_Price = faker.commerce.price(1,300);
       const item_StoreId = faker.random.number({
         'min': 1,
         'max': 1500
       });
 
       const data = `${item_Id} ${delimiter} ${item_StoreId} ${delimiter} ${item_Availability} ${delimiter} ${item_Price}\n`;
-      console.log('items data is shaped like so: ', data);
 
       if (i === 100) {
         writer.write(data, encoding, callback);

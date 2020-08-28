@@ -10,10 +10,10 @@ CREATE TABLE stores(
   store_PhoneNumber VARCHAR
 );
 
-CREATE TABLE products(
+CREATE TABLE items(
   item_Id INT primary key,
+  item_StoreId INT,
   item_Availability BOOL,
-  item_Price VARCHAR,
-  item_StoreId INT
+  item_Price VARCHAR
 );
 
