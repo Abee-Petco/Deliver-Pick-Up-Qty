@@ -8,10 +8,6 @@ writeStores.write('store_Id | store_Name | store_Address | store_PhoneNumber\n',
 
 const faker = require('faker/locale/en_US');
 
-//resources:
-//https://nodejs.org/api/stream.html#stream_event_drain
-//https://medium.com/@danielburnsart/writing-a-large-amount-of-data-to-a-csv-file-using-nodes-drain-event-99dcaded99b5
-
 //10MM products across 1500 stores
 
 //Example:
