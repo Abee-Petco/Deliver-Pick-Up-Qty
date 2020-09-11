@@ -1,18 +1,8 @@
-//POSTGRES Syntax for Read (GET) using itemId
-SELECT
-  *
-FROM
-   items
-WHERE
-  item_Id = itemId; //is it single ='s for equal to in postgres?
-
-//would have to pass value of items.item_StoreId to next query
-SELECT
-  *     //return all storeIds
-FROM
-  stores
-WHERE
-  item.item_StoreId = store_id  //does a query have access to both tables as long as you're in the same db?
+//CouchDB Syntax for Read (GET) **************************************
+//ATTEMPT 1 as two different requests
+curl -X GET http://127.0.0.1:5984/items/00050c6501cf1ad865bd725c61000b75
+//HTTP Response:
+{ "_id": "00050c6501cf1ad865bd725c61000b75", "_rev": "1-bb009c5f484a8f0c2e3e37ed019f37be", "item_Availability": " false ", "item_Id": "2846754 ", "item_Price": " 18.00", "item_StoreId": " 1216 " }
 
 //GET - find one item
 let findAnItemAvailAndStore = function (itemId) {
@@ -37,7 +27,7 @@ let findAnItemAvailAndStore = function (itemId) {
         })
         return { itemAvailability: storeData };
       } else {
-        return { itemAvailability: 'No items found'};
+        return { itemAvailability: 'No items found' };
       }
     })
     .catch((err) => {
@@ -46,19 +36,12 @@ let findAnItemAvailAndStore = function (itemId) {
     })
 };
 
-//POSTGRES Syntax for Create (POST)
-INSERT INTO stores(
-  store_id,
-  store_Name,
-  store_Address,
-  store_PhoneNumber
-  )
-VALUES (
-  storeData.store_id,
-  storeData.store_Name,
-  storeData.store_Address,
-  storeData.store_PhoneNumber
-);
+//CouchDB Syntax for Create (POST)************************************
+curl -X PUT http://127.0.0.1:5984/stores/"1501" -d '{"store_Address": " 444 Couch Drive, Sofa, IN, 44444 ", "store_Id": "1501 ", "store_Name": " CouchBum ", "store_PhoneNumber": " 777-555-7777" }'
+
+//HTTP Response:
+{"ok":true,"id":"1501","rev":"1-d61d6c905f4bb0981756c2d8bb61d1ea"}
+35540262 ns === 0.035ms
 
 //CREATE - new store
 let addNewStore = function (storeData) {
@@ -72,17 +55,12 @@ let addNewStore = function (storeData) {
     })
 };
 
-//POSTGRES Syntax for Update (PUT)
+//CouchDB Syntax for Update (PUT) ***********************************
+$ curl -X GET http://127.0.0.1:5984/stores/1499
+//Use revision id _rev from response to update the document.
+$ curl -X PUT http://127.0.0.1:5984/stores/1499/-d '{ "item_Price":" 33.00" , "_rev":"1-5585a9c00971d78a751c106805508fbf" }'
 
-UPDATE stores
-SET
-  store_id = storeData.store_id,
-  store_Name = storeData.store_Name,
-  store_Address = storeData.storeAddress,
-  store_PhoneNumber = storeData.store_PhoneNumber
-WHERE
-  storeName = storeData.storeName;
-
+$ curl -X GET http://127.0.0.1:5984/stores/1499
 
 //UPDATE - change stores phone number
 let updateStoreDetails = function (storeDetails) {
@@ -94,7 +72,7 @@ let updateStoreDetails = function (storeDetails) {
     storePhoneNumber: storeDetails.storePhoneNumber
   };
   console.log('db model has vals to do lookup and update: ', filter, update);
-  return Store.findOneAndUpdate(filter, update, { new: true})
+  return Store.findOneAndUpdate(filter, update, { new: true })
     .then((updatedStore) => {
       console.log('db: success updating store data', updatedStore)
       return updatedStore;
@@ -104,11 +82,8 @@ let updateStoreDetails = function (storeDetails) {
     })
 };
 
-//POSTGRES Syntax for Delete (DELETE)
-
-DELETE FROM stores
-WHERE store_Name = store.store_Name
-RETURNING * ;
+//CouchDB Syntax for Delete (DELETE)**********************************
+curl -X DELETE http://127.0.0.1:5984/stores/01?rev=1-bbc790e06ca784953aa78b4a8748bb6f
 
 //DELETE - remove closing store location
 let deleteStore = function (store) {

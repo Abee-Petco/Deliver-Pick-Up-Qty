@@ -1,4 +1,4 @@
 node_modules
+data-files-csv-json
 bundle.js
-items.csv
-stores.csv
+notes.md

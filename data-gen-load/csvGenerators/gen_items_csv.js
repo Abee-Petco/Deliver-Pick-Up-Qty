@@ -2,7 +2,7 @@ const fs = require('fs');
 
 const csvWriter = require('csv-write-stream');
 var writer = csvWriter()
-const writeItems = fs.createWriteStream('items.csv');
+const writeItems = fs.createWriteStream('items99.csv');
 
 writeItems.write('item_Id |  item_StoreId | item_Availability | item_Price\n', 'utf8');
 
@@ -17,10 +17,9 @@ const faker = require('faker');
 
 console.time("data generation test");
 
-//Example:
 function writeTenMillionProductsToCSV(writer, encoding, callback) {
 
-  let i = 10000001;
+  let i = 10000101;
   let id = 99;
 
   function write() {
