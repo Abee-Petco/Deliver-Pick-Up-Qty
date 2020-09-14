@@ -76,7 +76,7 @@ app.put('/updateStoreDetails/', function (req, res) {
 //DELETE - remove closing store location
 app.delete('/deleteStore/', function (req, res) {
   console.log('received store to delete', req.query)
-  let storeName = req.body.storeName;
+  let storeName = req.body.store_name;
   return deleteClosingStore(storeName)
     .then((data) => {
       console.log('server: store deleted', data)

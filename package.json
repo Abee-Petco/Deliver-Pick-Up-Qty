@@ -45,7 +45,7 @@
     "enzyme-adapter-react-16": "^1.15.2",
     "eslint": "^7.3.0",
     "eslint-config-hackreactor": "github:reactorcore/eslint-config-hackreactor",
-    "jest": "^26.1.0",
+    "jest": "^26.4.2",
     "jest-environment-enzyme": "^7.1.2",
     "jest-enzyme": "^7.1.2",
     "nodemon": "^2.0.4",

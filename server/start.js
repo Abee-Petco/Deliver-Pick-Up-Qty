@@ -7,10 +7,6 @@ app.use(morgan('dev'));
 
 console.log(db.connectToPostgres());
 
-db.connectToPostgres = function () {
-  console.log('database connected');
-};
-
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);
 });

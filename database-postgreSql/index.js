@@ -23,7 +23,7 @@ let connectToPostgres = () => {
       console.log('error getting client: ', error)
     } else {
       let query = 'SELECT NOW() as now'
-      client.query(query, function(err, result) {
+      client.query(query, function (err, result) {
         done();
         if (err) {
           throw err;
@@ -39,57 +39,48 @@ let connectToPostgres = () => {
 
 //READ
 const findItemInStore = `
-  SELECT items.item_price, stores.store_name, stores.store_address, stores.store_phonenumber FROM items
+  SELECT items.item_price, stores.store_name, stores.store_address, stores.store_phonenumber
+  FROM items
   JOIN stores ON items.item_StoreId = stores.store_id
   WHERE items.item_Id = $1;
 `;
 
 //CREATE
 const createStore = `
-  INSERT INTO stores(
-    store_id,
+  INSERT INTO stores
+    (
     store_Name,
     store_Address,
     store_PhoneNumber
     )
-  VALUES (
-    storeData.store_id,
-    storeData.store_Name,
-    storeData.store_Address,
-    storeData.store_PhoneNumber
-  );
+    VALUES ($1, $2, $3);
 `;
 
 //UPDATE
 const updateStore = `
   UPDATE stores
   SET
-    store_id = storeData.store_id,
-    store_Name = storeData.store_Name,
-    store_Address = storeData.storeAddress,
-    store_PhoneNumber = storeData.store_PhoneNumber
-    WHERE
-    store_Name = storeData.storeName;
+    store_Name = $1,
+    store_Address = $2,
+    store_PhoneNumber = $3
+  WHERE
+    store_Name = $1
+  RETURNING *;
 `;
 
 //DELETE
 const deleteStore = `
   DELETE FROM stores
-  WHERE store_Name = store.store_Name
-  RETURNING * ;
+  WHERE store_Name=$1
 `;
 
 module.exports = {
   pool,
   createStore,
   findItemInStore,
+  updateStore,
   deleteStore,
   connectToPostgres
 }
-// module.exports.pool = pool;
-// module.exports.createStore = createStore;
-// module.exports.findItemInStore = findItemInStore;
-// module.exports.updateStore = updateStore;
-// module.exports.deleteStore = deleteStore;
-// module.exports.connectToPostgres = connectToPostgres;
+
 
