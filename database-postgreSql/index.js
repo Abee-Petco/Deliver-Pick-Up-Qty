@@ -1,4 +1,4 @@
-const { pool } = require('pg');
+const { Pool, Client } = require('pg');
 //using pool given eventual need to use db frequently as scale up db calls
 
 const pool = new Pool({
@@ -6,8 +6,36 @@ const pool = new Pool({
   password: "Jezebel2",
   host: "127.0.0.1",
   port: 5432,
-  database: deliverpickup
+  database: 'deliverpickup'
 });
+
+//error handler for pool. If error, the cb is fired
+pool.on('error', (err, client) => {
+  console.error('Unexpected error on idle client', err)
+  process.exit(-1)
+})
+
+// using the pool obj, connect to db and use a client in that pool to execute a query
+let connectToPostgres = () => {
+  console.log('db index.js connect func called')
+  pool.connect(function (error, client, done) {
+    if (error) {
+      console.log('error getting client: ', error)
+    } else {
+      let query = 'SELECT NOW() as now'
+      client.query(query, function(err, result) {
+        done();
+        if (err) {
+          throw err;
+          console.log(err.stack)
+        } else {
+          console.log('database connected: ', result.rows[0]);
+          var rows = result.rows[0];
+        }
+      })
+    }
+  });
+};
 
 //READ
 const findItemInStore = `
@@ -51,8 +79,17 @@ const deleteStore = `
   RETURNING * ;
 `;
 
-module.exports.pool = pool;
-module.exports.createStore = createStore;
-module.exports.findItemInStore = findItemInStore;
-module.exports.updateStore = updateStore;
-module.exports.deleteStore = deleteStore;
+module.exports = {
+  pool,
+  createStore,
+  findItemInStore,
+  deleteStore,
+  connectToPostgres
+}
+// module.exports.pool = pool;
+// module.exports.createStore = createStore;
+// module.exports.findItemInStore = findItemInStore;
+// module.exports.updateStore = updateStore;
+// module.exports.deleteStore = deleteStore;
+// module.exports.connectToPostgres = connectToPostgres;
+

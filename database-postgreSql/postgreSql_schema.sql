@@ -3,14 +3,14 @@
 
 CREATE TABLE stores(
   store_id INT primary key,
-  store_Name VARCHAR, //indexed
+  store_Name VARCHAR,
   store_Address VARCHAR,
   store_PhoneNumber VARCHAR
 );
 
 CREATE TABLE items(
-  item_Id INT primary key, //indexed
-  item_StoreId INT, //utilized via JOIN for READ(get)
+  item_Id INT primary key,
+  item_StoreId INT, 
   item_Availability BOOL,
   item_Price VARCHAR
 );
