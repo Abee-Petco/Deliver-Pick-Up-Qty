@@ -1,10 +1,12 @@
+const dotenv = require('dotenv').config();
 const { Pool, Client } = require('pg');
+
 //using pool given eventual need to use db frequently as scale up db calls
 
 const pool = new Pool({
-  user: "lfryett1",
-  password: "Jezebel2",
-  host: "127.0.0.1",
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  host: process.env.DB_HOST,
   port: 5432,
   database: 'deliverpickup'
 });

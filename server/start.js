@@ -1,6 +1,8 @@
 const morgan = require('morgan');
 const app = require('./index.js');
 // const connect = require('../database-mongodb/connect.js');
+const dotenv = require('dotenv');
+
 const db = require('../database-postgreSql/index.js');
 const PORT = 3006;
 app.use(morgan('dev'));

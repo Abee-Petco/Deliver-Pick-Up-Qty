@@ -35,7 +35,7 @@ let findAnItemAvailAndStore = function (itemId) {
 
 //CREATE - add new store record
 let addNewStore = function (storeData) {
-  console.log('addNew: postgres dbmodel rcvd store data: ', storeData);
+  //console.log('addNew: postgres dbmodel rcvd store data: ', storeData);
   const storeQuery = {
     text: createStore,
     values: [
@@ -44,10 +44,10 @@ let addNewStore = function (storeData) {
       storeData.store_PhoneNumber
     ],
   }
-  console.log('data ready for new Store record: ', storeQuery.values);
+  //console.log('data ready for new Store record: ', storeQuery.values);
   return pool.query(storeQuery)
     .then((res) => {
-      console.log('store obj created: ', res);
+      //console.log('store obj created: ', res);
       return res.status(200).send(`${res.rows[0].store_name} created`);
     })
     .catch((err) => {
