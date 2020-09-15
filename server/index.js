@@ -1,14 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { ItemAvailability, Store } = require('../database-mongodb/itemAvailability.js')
+//const { ItemAvailability, Store } = require('../database-mongodb/itemAvailability.js')
 const {
   findAnItemAvailAndStore,
   addNewStore,
   updateStoreDetails,
-  deleteStore,
-} = require('../models/mongoDB_model.js')
-const mongoose = require('mongoose');
-const connect = require('../database-mongodb/connect.js')
+  deleteClosingStore,
+} = require('../models/postgreSql_model.js')
+//const mongoose = require('mongoose');
+//const connect = require('../database-mongodb/connect.js')
 const cors = require('cors');
 const app = express();
 app.use(cors());
@@ -76,8 +76,8 @@ app.put('/updateStoreDetails/', function (req, res) {
 //DELETE - remove closing store location
 app.delete('/deleteStore/', function (req, res) {
   console.log('received store to delete', req.query)
-  let storeName = req.body.storeName;
-  return deleteStore(storeName)
+  let storeName = req.body.store_name;
+  return deleteClosingStore(storeName)
     .then((data) => {
       console.log('server: store deleted', data)
       res.status(200).send(data);
