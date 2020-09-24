@@ -1,5 +1,5 @@
 const insertRecords = require('../database-mongodb/insert_records.js');
-const {ItemAvailability, Store} = require('../database-mongodb/itemAvailability.js');
+const { ItemAvailability, Store } = require('../database-mongodb/itemAvailability.js');
 const mongoose = require('mongoose');
 const request = require('supertest');
 const app = require('../server/index.js');
@@ -32,7 +32,6 @@ test('successfully retrieves availability data for item 106', () => {
     .then((data) => {
       return request(app).get('/availableAt/106/')
         .then((response) => {
-          // console.log(response.body);
           expect(response.status).toBe(200);
           expect(response.body.itemAvailability).toHaveLength(5);
           expect(response.body.itemAvailability[0].availability).toBe(data.itemAvailability[0].availability);
@@ -40,22 +39,13 @@ test('successfully retrieves availability data for item 106', () => {
           expect(response.body.itemAvailability[0].storeAddress).toBe(data.itemAvailability[0].storeId.storeAddress);
           expect(response.body.itemAvailability[0].storePhoneNumber).toBe(data.itemAvailability[0].storeId.storePhoneNumber);
         })
-  })
+    })
 
   test('returns 404 status code if item not found', () => {
-  return request(app).get('/availableAt/200')
-    .then((response) => {
-      expect(response.status).toBe(404);
-    })
-});
+    return request(app).get('/availableAt/200')
+      .then((response) => {
+        expect(response.status).toBe(404);
+      })
+  });
 
 });
-
-/*
-let newStoreData = [
-  {
-    storeName: 'Union Square',
-    storeAddress: '860 Broadway, New York, NY 10003',
-    storePhoneNumber: '212-358-0692'
-  }
-*/

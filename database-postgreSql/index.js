@@ -19,7 +19,7 @@ pool.on('error', (err, client) => {
 
 // using the pool obj, connect to db and use a client in that pool to execute a query
 let connectToPostgres = () => {
-  console.log('db index.js connect func called')
+
   pool.connect(function (error, client, done) {
     if (error) {
       console.log('error getting client: ', error)

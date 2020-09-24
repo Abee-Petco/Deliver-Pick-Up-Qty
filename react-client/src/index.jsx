@@ -25,8 +25,6 @@ class App extends React.Component {
   fetchItemAvailability(itemId) {
 
     let requestURL = `http://localhost:3006/availableAt/${itemId}`;
-    console.log('productId from URL is: ', itemId);
-    console.log('url being called for availAt by client: ', requestURL);
 
     return axios.get(requestURL)
       .then((response) => {
@@ -39,21 +37,18 @@ class App extends React.Component {
   }
 
   getProductId(path, method) {
-    (console.log('path and method are passed: ', path, method))
     let productId;
-    console.log('split: ', path.split('/'))
+
     if (method === 'queryParam') {
-      console.log('it sees it as a queryParam')
       return Number(path.split('=')[1]);
     }
     if (method === 'value') {
-      console.log('it sees a value')
       return Number(path.split('/')[1]);
     }
   }
 
   getProductIdFromUrl() {
-    console.log('window pathname captured: ', window.location.pathname);
+
     if (window.location.pathname === '/') {
       return 100;
     } else if (window.location.pathname === "/product") {
@@ -66,14 +61,11 @@ class App extends React.Component {
   componentDidMount() {
 
     let itemId = this.getProductIdFromUrl();
-    console.log('Client: compDidMount itemId var = ', itemId);
-
     let itemAvailability = this.state.itemAvailability;
-    console.log('itemAvail before component did mount complete: ', itemAvailability);
+
     this.fetchItemAvailability(itemId)
       .then(res => {
         let itemAvailibilityFetched = res.itemAvailability;
-        console.log('client gets store data back: ', itemAvailibilityFetched)
         this.setState({
           itemAvailability: itemAvailibilityFetched
         })
@@ -81,7 +73,6 @@ class App extends React.Component {
       .catch((err) => {
         console.log('Error saving state:', err);
       });
-    console.log('component did mount complete');
   }
 
   render() {

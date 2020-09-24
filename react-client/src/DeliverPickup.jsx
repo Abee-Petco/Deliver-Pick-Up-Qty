@@ -2,14 +2,11 @@ import React from 'react';
 
 const DeliverPickup = (props) => {
 
-  console.log('props in deliverPickup service code: ', props.store);
-
   let storeData = props.store;
   let price = storeData.itemPrice;
   let currency = storeData.itemCurrency;
   let available = storeData.availability;
   let storeName = storeData.storeName;
-  console.log(price, currency, available, storeName);
 
   return (
     <div className="deliveryPickupContainers">

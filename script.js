@@ -5,6 +5,7 @@ import { sleep, check } from 'k6';
 // options.stages === ramping behaviour of the VU level ramp up/down
 // the following is init code. options to the whole test, how to run the test, distribute it on the cloud,
 export let options = {
+
   //INIT TEST
   //vus: 10,
   //duration: '30s',

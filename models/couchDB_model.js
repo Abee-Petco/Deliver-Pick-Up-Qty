@@ -6,7 +6,7 @@ curl -X GET http://127.0.0.1:5984/items/00050c6501cf1ad865bd725c61000b75
 
 //GET - find one item
 let findAnItemAvailAndStore = function (itemId) {
-  console.log('db model rcvd item id = ', itemId)
+
   return ItemAvailability.findOne({ itemId: itemId }, '-_id -__v')
     .populate({
       path: 'itemAvailability',
@@ -15,7 +15,7 @@ let findAnItemAvailAndStore = function (itemId) {
       }
     })
     .then((data) => {
-      console.log('db model processed itemId, store lookup = ', data);
+
       if (data) {
         let storeData = data.itemAvailability.map((store) => {
           return {
@@ -45,7 +45,7 @@ curl -X PUT http://127.0.0.1:5984/stores/"1501" -d '{"store_Address": " 444 Couc
 
 //CREATE - new store
 let addNewStore = function (storeData) {
-  console.log('mongo:dbmodel rcvd store data: ', storeData);
+
   return Store.create(storeData)
     .then((storeObj) => {
       return storeObj;
@@ -64,17 +64,15 @@ $ curl -X GET http://127.0.0.1:5984/stores/1499
 
 //UPDATE - change stores phone number
 let updateStoreDetails = function (storeDetails) {
-  console.log('database received store to update: ', storeDetails);
+
   const filter = { storeName: storeDetails.storeName };
   const update = {
     storeName: storeDetails.storeName,
     storeAddress: storeDetails.storeAddress,
     storePhoneNumber: storeDetails.storePhoneNumber
   };
-  console.log('db model has vals to do lookup and update: ', filter, update);
   return Store.findOneAndUpdate(filter, update, { new: true })
     .then((updatedStore) => {
-      console.log('db: success updating store data', updatedStore)
       return updatedStore;
     })
     .catch((err) => {
@@ -87,7 +85,6 @@ curl -X DELETE http://127.0.0.1:5984/stores/01?rev=1-bbc790e06ca784953aa78b4a874
 
 //DELETE - remove closing store location
 let deleteStore = function (store) {
-  console.log('database received store to update: ', store)
   return Store.findOneAndDelete({ storeName: store })
     .then((deleteObj) => {
       console.log('db: success deleted store from data', deleteObj)
