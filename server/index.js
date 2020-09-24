@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+const cache = require('memory-cache');
 
 const {
   findAnItemAvailAndStore,
@@ -25,8 +26,31 @@ app.get('*.js', (req, res, next) => {
 
 app.use(express.static(__dirname + '/../react-client/dist'));
 
+/*---------CACHE----------------*/
+
+let memCache = new cache.Cache();
+let cacheMiddleware = (duration) => {
+  return (req, res, next) => {
+    let key = '__express__' + req.originalUrl || req.url
+    let cacheContent = memCache.get(key);
+    if (cacheContent) {
+      res.send(cacheContent);
+      return
+    } else {
+      res.sendResponse = res.send
+      res.send = (body) => {
+        memCache.put(key, body, duration * 1000);
+        res.sendResponse(body)
+      }
+      next()
+    }
+  }
+}
+
+/*-----CRUD SERVER ROUTES--------*/
+
 //READ - get item in avail stores
-app.get('/availableAt/:itemId/', function (req, res) {
+app.get('/availableAt/:itemId/', cacheMiddleware(30), function (req, res) {
   let itemId = req.params.itemId;
   return findAnItemAvailAndStore(itemId)
     .then((data) => {
