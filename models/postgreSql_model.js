@@ -13,23 +13,25 @@ let findAnItemAvailAndStore = function (itemId) {
     .then((data) => {
       console.log('db model processed itemId, store lookup = ', data);
       if (data) {
-        console.log('store data returned: ', data);
-        console.log('data in rows: ', data.rows[0]);
+        console.log('db returned store data: ', data);
+        console.log('data parsed into rows: ', data.rows[0]);
         let itemStoreDetails = data.rows[0];
         let storeData = {
-          itemPrice: itemStoreDetails.item_price,
           storeName: itemStoreDetails.store_name,
           storeAddress: itemStoreDetails.store_address,
-          storePhoneNumber: itemStoreDetails.store_phonenumber
+          storePhoneNumber: itemStoreDetails.store_phonenumber,
+          availability: true,
+          itemPrice: itemStoreDetails.item_price,
+          itemCurrency: '$',
         };
-        return res.status(200).send({ itemAvailability: storeData });
+        return { itemAvailability: storeData };
       } else {
-        return res.status(200).send({ itemAvailability: 'This item is unavailable at store' });
+        return { itemAvailability: 'This item is unavailable at store' };
       }
     })
     .catch((err) => {
-      return res.status(500).send(err);
-      console.log(err);
+      return err;
+      console.log('db query error occurred:', err);
     })
 };
 
@@ -48,10 +50,10 @@ let addNewStore = function (storeData) {
   return pool.query(storeQuery)
     .then((res) => {
       //console.log('store obj created: ', res);
-      return res.status(200).send(`${res.rows[0].store_name} created`);
+      return `${res.rows[0].store_name} created`;
     })
     .catch((err) => {
-      throw err;
+      return err;
     })
 };
 
@@ -70,10 +72,10 @@ let updateStoreDetails = function (storeDetails) {
   return pool.query(updateQuery)
     .then((res) => {
       console.log('db: success updating store data', res)
-      return status(200).send(`${res.rows[0].store_name} updated`);
+      return `${res.rows[0].store_name} updated`;
     })
     .catch((err) => {
-      throw err;
+      return err;
     })
 };
 
@@ -84,7 +86,7 @@ let deleteClosingStore = function (storeName) {
     .then((res) => {
       console.log('db: success deleted store from data', res)
       // return { [result.command]: result.rowCount };
-      return res.status(200).send(`${res.rows[0].store_name} deleted`);
+      return `${res.rows[0].store_name} deleted`;
     })
     .catch((err) => {
       throw err;

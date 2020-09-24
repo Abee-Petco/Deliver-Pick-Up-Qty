@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require('path');
 //const { ItemAvailability, Store } = require('../database-mongodb/itemAvailability.js')
 const {
   findAnItemAvailAndStore,
@@ -27,13 +28,10 @@ app.use(express.static(__dirname + '/../react-client/dist'));
 
 //READ - get item in avail stores
 app.get('/availableAt/:itemId/', function (req, res) {
-  console.log('svr rcvd avail req. item = ', req.params.itemId);
+  console.log('svr rcvd avail req.item = ', req.params.itemId);
   let itemId = req.params.itemId;
   return findAnItemAvailAndStore(itemId)
     .then((data) => {
-      if (data.itemAvailability === 'No items found') {
-        res.status(404).send('No items found.')
-      }
       console.log('server: success getting store list', data)
       res.status(201).send(data);
     })
@@ -87,6 +85,10 @@ app.delete('/deleteStore/', function (req, res) {
       console.log(err);
     })
 })
+
+app.get('/:product_id', (req, res) => {
+  res.sendFile(path.resolve('react-client/dist/index.html'));
+});
 
 module.exports = app
 
