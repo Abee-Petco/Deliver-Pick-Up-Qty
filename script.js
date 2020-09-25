@@ -18,9 +18,14 @@ export let options = {
     { duration: '3m', target: 10 },
     { duration: '1m', target: 100 }, // around breaking point of 200 users / second
     { duration: '3m', target: 100 },
-    // { duration: '1m', target: 1000 }, // beyond the breaking point
-    // { duration: '3m', target: 1000 },
-    { duration: '1m', target: 0 }   // scale down. Recovery stage.
+    { duration: '1m', target: 1000 }, // beyond the breaking point
+    { duration: '3m', target: 1000 },
+    { duration: '1m', target: 100 }, // scale down. Recovery stage.
+    { duration: '3m', target: 100 },
+    { duration: '1m', target: 10 },
+    { duration: '3m', target: 10 },
+    { duration: '1m', target: 1 },
+    { duration: '3m', target: 1 },
   ],
 
   //SPIKE Immediately overwhelm the system. (Use case: Kate Middleton's purse puppy seen wearing sweater from Petco)
@@ -43,8 +48,8 @@ export let options = {
   // ],
 
   thresholds: {
-    http_req_duration: ['p(99)<1000'], // 99% of requests must complete below 1s
-    'stores returned successfully': ['p(99)<1000'], // 99% of requests must complete below 1s
+    http_req_duration: ['p(99)<500'], // 99% of requests must complete below 500ms
+    'stores returned successfully': ['p(99)<500'], // 99% of requests must complete below 1s
   }
 }
 //default function defines the entry point for my VUs
