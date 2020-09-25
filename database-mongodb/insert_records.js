@@ -41,7 +41,6 @@ const generateRecords = () => {
     })
     //all of the newly created stores are returned
     .then((stores) => {
-      console.log('StoreData', storesIds)
       let itemData = [];
       //then iterated over each of the 100 items
       for (let i = 100; i < 200; i++) {
@@ -53,7 +52,6 @@ const generateRecords = () => {
         //created an item record (100 - 199) and ItemAvail as properties and pushed to array
         itemData.push({itemId: i.toString(), itemAvailability});
       }
-      console.log('Array of data objects/rows: ', itemData);
       return itemData;
     })
 }
@@ -61,7 +59,6 @@ const generateRecords = () => {
 let insertRecords = () => {
   return generateRecords() //returns 100 - 199 itemIds distributed across 5 stores
     .then((data) => {
-      console.log('Data', data[0])
       //inserts itemId (product data) into the table
       return ItemAvailability.insertMany(data)
         .then(() => {
