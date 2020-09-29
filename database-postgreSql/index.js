@@ -1,5 +1,6 @@
 const dotenv = require('dotenv').config();
 const { Pool, Client } = require('pg');
+const { findAnItemAvailAndStore } = require('../models/postgreSql_model');
 
 //using pool given eventual need to use db frequently as scale up db calls
 
@@ -41,7 +42,7 @@ let connectToPostgres = () => {
 
 //READ
 const findItemInStore = `
-  SELECT items.item_price, stores.store_name, stores.store_address, stores.store_phonenumber
+  SELECT items.item_price, stores.store_name
   FROM items
   JOIN stores ON items.item_StoreId = stores.store_id
   WHERE items.item_Id = $1;
