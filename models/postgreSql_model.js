@@ -14,11 +14,9 @@ let findAnItemAvailAndStore = function (itemId) {
         let itemStoreDetails = data.rows[0];
         let storeData = {
           storeName: itemStoreDetails.store_name,
-          storeAddress: itemStoreDetails.store_address,
-          storePhoneNumber: itemStoreDetails.store_phonenumber,
-          availability: true,
           itemPrice: itemStoreDetails.item_price,
-          itemCurrency: '$',
+          availability: true,
+          itemCurrency: "$"
         };
         return { itemAvailability: storeData };
       } else {
@@ -29,6 +27,9 @@ let findAnItemAvailAndStore = function (itemId) {
       return err;
     })
 };
+//storeAddress: itemStoreDetails.store_address,
+//storePhoneNumber: itemStoreDetails.store_phonenumber,
+//availability: true,
 
 //CREATE - add new store record
 let addNewStore = function (storeData) {

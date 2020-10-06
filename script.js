@@ -12,20 +12,32 @@ export let options = {
 
   //STRESS Verifying stability, reliability of system under extreme conditions. (Use case: Black Friday) NOTE: per leslie, scale, 1, 10, 100, 1000 RPS
   stages: [
-    { duration: '1m', target: 1 }, // below normal load
-    { duration: '3m', target: 1 },
-    { duration: '1m', target: 10 }, // normal load
-    { duration: '3m', target: 10 },
-    { duration: '1m', target: 100 }, // around breaking point of 200 users / second
-    { duration: '3m', target: 100 },
-    { duration: '1m', target: 1000 }, // beyond the breaking point
-    { duration: '3m', target: 1000 },
-    { duration: '1m', target: 100 }, // scale down. Recovery stage.
-    { duration: '3m', target: 100 },
-    { duration: '1m', target: 10 },
-    { duration: '3m', target: 10 },
+    //  { duration: '1m', target: 1 }, // below normal load
     { duration: '1m', target: 1 },
-    { duration: '3m', target: 1 },
+    //  { duration: '1m', target: 10 }, // normal load
+    //   { duration: '3m', target: 10 },
+    // //  { duration: '1m', target: 100 }, // around breaking point of 200 users / second
+    //   { duration: '3m', target: 100 },
+    // //  { duration: '1m', target: 1000 }, // beyond the old breaking point
+    //   { duration: '3m', target: 1000 },
+    // //  { duration: '1m', target: 1250 }, // beyond the new breaking point
+    //   { duration: '3m', target: 1250 }, // beyond the new breaking point
+    //   // { duration: '1m', target: 1500 }, // beyond the breaking point
+    //   // { duration: '1m', target: 2000 }, // beyond the breaking point
+    //   // { duration: '1m', target: 2500 }, // performed but mean RPS suffered, high latency, and some failures
+    //   // { duration: '1m', target: 2750 }, // performed but mean RPS suffered, experienced failed requests
+    //   // { duration: '1m', target: 3500 }, // FAILED
+    //   // { duration: '1m', target: 3500 }, // FAILED
+    //   // { duration: '1m', target: 5000 }, // FAILED
+    //   // { duration: '3m', target: 10000 },// FAILED
+    // //  { duration: '1m', target: 1000 }, // scale down. Recovery stage.
+    //   { duration: '3m', target: 1000 },
+    // //  { duration: '1m', target: 100 },
+    //   { duration: '3m', target: 100 },
+    // //  { duration: '1m', target: 10 },
+    //   { duration: '3m', target: 10 },
+    // //  { duration: '1m', target: 1 },
+    // { duration: '3m', target: 1 }
   ],
 
   //SPIKE Immediately overwhelm the system. (Use case: Kate Middleton's purse puppy seen wearing sweater from Petco)
@@ -48,22 +60,35 @@ export let options = {
   // ],
 
   thresholds: {
-    http_req_duration: ['p(99)<500'], // 99% of requests must complete below 500ms
-    'stores returned successfully': ['p(99)<500'], // 99% of requests must complete below 1s
+    'http_req_duration': ['p(99)<500'] // 99% of requests must complete below 500ms
   }
-}
+};
 //default function defines the entry point for my VUs
 //following is Vu code, ran over and over inside each VU as long as test is run, aggregrated results reported by k6
+//ubuntu@ec2-3-14-143-106.us-east-2.compute.amazonaws.com
+//http://18.217.42.68/
+
 export default function () {
-  let randomItemNum = Math.ceil(Math.random() * 10000000);
-  let res = http.get(`http://127.0.0.1:3006/availableAt/${randomItemNum}`);
+  let randomItemNum = Math.ceil(Math.random() * 10000);
+  console.log(`random ItemNum in test script is: ${randomItemNum}`)
+  // let res = http.get(http.url`http://18.217.42.68:3006/availableAt/${randomItemNum}`);
+  let res = http.get(http.url`http://localhost:3006/${randomItemNum}`);
   check(res,
     {
-      'status was 201': r => r.status == 201,
+      'status was OK': r => r.status === 201 || r.status === 200,
       'status was 404': r => r.status === 404,
       'status was 500': r => r.status === 500,
       'transaction time OK': r => r.timings.duration < 500
     });
+
+  if (res.status !== 200 && res.status !== 201 && res.status !== 405 && res.status != 500) {
+    let txt = JSON.stringify(res);
+    console.log(`got unknown rstatus ${txt}`);
+  }
+
+  if (res.timings.duration > 5000) {
+    console.log(`long query ${res.timings.duration}s`);
+  }
   sleep(1);
 }
 

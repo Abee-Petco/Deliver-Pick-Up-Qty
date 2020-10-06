@@ -19,7 +19,6 @@ class App extends React.Component {
         itemCurrency: "$"
       }
     }
-
   }
 
   fetchItemAvailability(itemId) {
@@ -78,7 +77,7 @@ class App extends React.Component {
   render() {
     //let defaultStore = this.state.itemAvailability ? this.state.itemAvailability[0] : null;
     if (!this.state)
-    return (null);
+      return (null);
 
     return (
       <DeliverPickup store={this.state.itemAvailability} />
@@ -93,3 +92,18 @@ ReactDOM.render(<App />, document.getElementById('itemAvailability'));
 
 // (this.state.itemAvailability && this.state.itemPrice)
 // ?
+
+    //Following was used to ensure 50% distribution btw 2 EC2 instances for horizontal scaling
+    // if ((Math.random() < 0.5)) {
+    //   requestURL = `http://localhost:3006/availableAt/${itemId}`
+    //   // instance1Count++;
+    //   // console.log('hitting service instance 1', instance1Count)
+    // } else {
+    //   requestURL = `http://localhost:3006/availableAt/${itemId}`
+    //   // instance2Count++;
+    //   // console.log('hitting service instance 2', instance2Count)
+    // }
+
+
+  // let instance1Count = 0;
+  // let instance2Count = 0;
